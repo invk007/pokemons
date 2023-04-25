@@ -2,15 +2,22 @@ import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from app import constants
-from app.tools import get, save_to_file, timer
+from app.tools import get, save_to_file
 
 logging.basicConfig()
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
 
 
-@timer
 def dump_pokemons_threads():
+    """
+    Retrieves a list of Pokemons from an external API using multiple threads,
+    and saves it to a file.
+
+    :return: None
+    :raises Exception: if there is an error while getting data from the API or
+    writing it to file
+    """
     try:
         general = get(f'{constants.API_URL}?limit=1')
     except Exception as err:
@@ -42,8 +49,12 @@ def dump_pokemons_threads():
     save_to_file('pokemons_threads.json', pokemons)
 
 
-@timer
 def dump_pokemons_seq():
+    """
+    Retrieves a list of Pokemons from an external API sequentially, and saves it
+    to a file.
+    :return:
+    """
     pokemons = []
     next_ = f'{constants.API_URL}?limit={constants.LIMIT}'
 
