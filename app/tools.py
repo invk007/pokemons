@@ -1,7 +1,7 @@
 import json
+import httpx
+from httpx import RequestError
 
-import requests
-from requests import HTTPError
 
 
 def get(url: str) -> dict:
@@ -15,11 +15,32 @@ def get(url: str) -> dict:
     the response
     """
     try:
-        response = requests.get(url)
-    except HTTPError as err:
+        response = httpx.get(url)
+    except RequestError as err:
         raise Exception(f'Request to API failed with error: {err}')
     except Exception:
-        raise Exception('Unexpected error while getting data from API')
+        raise Exception('Unexpected error while making request')
+
+    return response.json()
+
+
+async def async_get(url: str) -> dict:
+    """
+    Sends a GET request to the specified URL asynchronously and returns the
+    response body as a dictionary.
+
+    :param url: the URL to send the GET request to
+    :return: a dictionary representing the response body
+    :raises Exception: if there is an error while sending the request or parsing
+    the response
+    """
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+    except RequestError as err:
+        raise Exception(f'Request to API failed with error: {err}')
+    except Exception:
+        raise Exception('Unexpected error while making request')
 
     return response.json()
 
