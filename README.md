@@ -1,4 +1,3 @@
-Simple app which loads pokemons information from
-https://pokeapi.co/api/v2/pokemon and saves it to files.
+[WIP] Guess pokemon game.
 
-I use it as example of my coding style.
+I use this repo as example of my code style.
