@@ -1,7 +1,6 @@
 import json
 import httpx
-from httpx import RequestError
-
+from httpx import RequestError, HTTPStatusError
 
 
 def get(url: str) -> dict:
@@ -16,10 +15,11 @@ def get(url: str) -> dict:
     """
     try:
         response = httpx.get(url)
+        response.raise_for_status()
     except RequestError as err:
-        raise Exception(f'Request to API failed with error: {err}')
-    except Exception:
-        raise Exception('Unexpected error while making request')
+        raise Exception(f'An error occurred while requesting {err.request.url!r}')
+    except HTTPStatusError as err:
+        raise Exception(f'Error response {err.response.status_code} while requesting {err.request.url!r}')
 
     return response.json()
 
@@ -37,10 +37,11 @@ async def async_get(url: str) -> dict:
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
+            response.raise_for_status()
     except RequestError as err:
-        raise Exception(f'Request to API failed with error: {err}')
-    except Exception:
-        raise Exception('Unexpected error while making request')
+        raise Exception(f'An error occurred while requesting {err.request.url!r}')
+    except HTTPStatusError as err:
+        raise Exception(f'Error response {err.response.status_code} while requesting {err.request.url!r}')
 
     return response.json()
 
