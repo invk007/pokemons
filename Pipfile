@@ -14,6 +14,7 @@ blue = "*"
 pytest = "*"
 mypy = "*"
 pytest-mock = "*"
+opencv-stubs = {extras = ["opencv"], version = "*"}
 
 [requires]
 python_version = "3.11"
