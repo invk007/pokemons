@@ -56,8 +56,8 @@ async def test__async_get__request_successful(mocker: MockFixture):
     mock_response = mocker.Mock()
     mock_response.json.return_value = expected_result
 
-    mock_get = mocker.AsyncMock(return_value = mock_response)
-    mocker.patch.object(httpx.AsyncClient, "get", mock_get)
+    mock_get = mocker.AsyncMock(return_value=mock_response)
+    mocker.patch.object(httpx.AsyncClient, 'get', mock_get)
 
     result = await async_get(TEST_URL)
 
@@ -65,7 +65,9 @@ async def test__async_get__request_successful(mocker: MockFixture):
     mock_get.assert_called_once_with(TEST_URL)
 
 
-async def test__async_get__request_fails_with_request_error(mocker: MockFixture):
+async def test__async_get__request_fails_with_request_error(
+    mocker: MockFixture,
+):
     mock_request = mocker.Mock()
     mock_request.request.url = TEST_URL
     mocker.patch.object(
